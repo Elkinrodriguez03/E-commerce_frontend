@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const ShoppingCartContext = createContext();
 
@@ -21,6 +21,41 @@ export function ShoppingCartProvider({children}) {
         images: [],
     });
 
+    // Shopping Cart
+    const [cartProducts, setCartProducts] = useState([]);
+
+    // Checkout Side Menu - open/close
+    const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] =  useState(false);
+    
+    const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
+    const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
+
+    // Shopping cart - Order
+    const [order, setOrder] = useState([]);
+
+    // Get Products
+    const [items, setItems] = useState();
+    
+    useEffect(() => {
+        fetch('https://api.escuelajs.co/api/v1/products')
+        .then(res => res.json())
+        .then(data => setItems(data))
+        
+    }, []);
+    
+    // Get Products by Title
+    const [searchByTitle, setSearchByTitle] = useState();
+
+    const [filteredItems, setFilteredItems] = useState();
+
+    const filteredItemsByTitle = (items, searchByTitle) => {
+        return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+    }
+
+    useEffect(() => {
+        if (searchByTitle) setFilteredItems(filteredItemsByTitle(items, searchByTitle))
+    }, [items, searchByTitle]);
+
     return(
         <ShoppingCartContext.Provider 
             value={{
@@ -30,7 +65,19 @@ export function ShoppingCartProvider({children}) {
                 closeProductDetail,
                 isProductDetailOpen,
                 productToShow,
-                setProductToShow
+                setProductToShow,
+                cartProducts,
+                setCartProducts,
+                isCheckoutSideMenuOpen,
+                openCheckoutSideMenu,
+                closeCheckoutSideMenu,
+                order,
+                setOrder,
+                items,
+                setItems,
+                searchByTitle,
+                setSearchByTitle,
+                filteredItems
             }}
         >
             {children}
