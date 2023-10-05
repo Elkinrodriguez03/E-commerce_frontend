@@ -46,15 +46,46 @@ export function ShoppingCartProvider({children}) {
     // Get Products by Title
     const [searchByTitle, setSearchByTitle] = useState();
 
+    
     const [filteredItems, setFilteredItems] = useState();
-
+    
     const filteredItemsByTitle = (items, searchByTitle) => {
         return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
     }
+    
+    // Get Products by Category
+    const [searchByCategory, setSearchByCategory] = useState();
+    console.log(searchByCategory);
+    
+    const filteredItemsByCategory = (items, searchByCategory) => {
+        return items?.filter(item => item.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
+    }
+    const filterBy = (searchType, items, searchByTitle, searchByCategory) => {
+        if (searchType === 'BY_TITLE') {
+            return filteredItemsByTitle(items, searchByTitle)
+        }
+
+        if (searchType === 'BY_CATEGORY') {
+            return filteredItemsByCategory(items, searchByCategory)
+        }
+
+        if (searchType === 'BY_TITLE_AND_CATEGORY') {
+            return filteredItemsByCategory(items, searchByCategory).filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+        }
+
+        if (!searchType) {
+            return items
+        }
+    }
 
     useEffect(() => {
-        if (searchByTitle) setFilteredItems(filteredItemsByTitle(items, searchByTitle))
-    }, [items, searchByTitle]);
+        if (searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_TITLE_AND_CATEGORY', items, searchByTitle, searchByCategory));
+        if (searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory));
+        if (!searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory));
+        if (!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory));
+    }, [items, searchByTitle, searchByCategory]);
+
+    console.log(searchByTitle);
 
     return(
         <ShoppingCartContext.Provider 
@@ -77,7 +108,9 @@ export function ShoppingCartProvider({children}) {
                 setItems,
                 searchByTitle,
                 setSearchByTitle,
-                filteredItems
+                filteredItems,
+                searchByCategory,
+                setSearchByCategory
             }}
         >
             {children}
