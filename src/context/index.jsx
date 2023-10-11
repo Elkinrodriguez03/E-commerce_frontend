@@ -2,8 +2,36 @@ import { createContext, useState, useEffect } from "react";
 
 export const ShoppingCartContext = createContext();
 
+export const initializeLocalStorage = () => {
+    const accountInLocalStorage = localStorage.getItem('account');
+    const signOutInLocalStorage = localStorage.getItem('sign-out');
+
+    let parsedAccount;
+    let parsedSignOut;
+
+    if (!accountInLocalStorage) {
+        localStorage.setItem('account', JSON.stringify({}))
+        parsedAccount = {};
+    } else {
+        parsedAccount = JSON.parse(accountInLocalStorage)
+    }
+
+    if (!signOutInLocalStorage) {
+        localStorage.setItem('sign-out', JSON.stringify(false))
+        parsedSignOut = false;
+    } else {
+        parsedSignOut = JSON.parse(signOutInLocalStorage)
+    }
+}
+
 // eslint-disable-next-line react/prop-types
 export function ShoppingCartProvider({children}) {
+    // My Account
+    const [account, setAccount] = useState({});
+
+    // Sign-out
+    const [signOut, setSignOut] = useState(false);
+
     // Shopping cart - counter
     const [counter, setCounter] = useState(0);
 
@@ -18,7 +46,7 @@ export function ShoppingCartProvider({children}) {
         title: "",
         price: "",
         description: "",
-        images: [],
+        image: '',
     });
 
     // Shopping Cart
@@ -37,7 +65,7 @@ export function ShoppingCartProvider({children}) {
     const [items, setItems] = useState();
     
     useEffect(() => {
-        fetch('https://api.escuelajs.co/api/v1/products')
+        fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
         .then(data => setItems(data))
         
@@ -48,6 +76,7 @@ export function ShoppingCartProvider({children}) {
 
     
     const [filteredItems, setFilteredItems] = useState();
+    console.log(filteredItems);
     
     const filteredItemsByTitle = (items, searchByTitle) => {
         return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
@@ -58,7 +87,7 @@ export function ShoppingCartProvider({children}) {
     console.log(searchByCategory);
     
     const filteredItemsByCategory = (items, searchByCategory) => {
-        return items?.filter(item => item.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
+        return items?.filter(item => item.category.toLowerCase().includes(searchByCategory.toLowerCase()))
     }
     const filterBy = (searchType, items, searchByTitle, searchByCategory) => {
         if (searchType === 'BY_TITLE') {
@@ -83,6 +112,7 @@ export function ShoppingCartProvider({children}) {
         if (searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory));
         if (!searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory));
         if (!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, searchByTitle, searchByCategory]);
 
     console.log(searchByTitle);
@@ -110,7 +140,11 @@ export function ShoppingCartProvider({children}) {
                 setSearchByTitle,
                 filteredItems,
                 searchByCategory,
-                setSearchByCategory
+                setSearchByCategory,
+                account,
+                setAccount,
+                signOut,
+                setSignOut
             }}
         >
             {children}
