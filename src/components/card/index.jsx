@@ -43,15 +43,15 @@ function Card(data) {
 
     return (
         <div 
-            className="bg-white cursor-pointer w-50 h-70 rounded-lg m-10"
+            className="bg-white cursor-pointer w-full max-w-sm rounded-lg m-10 shadow-lg"
             onClick={() => showProduct(data.data)}
         >
-            <figure className="relative mb-3 w-full h-4/5">
-                <span className="absolute bottom-0 left-0 bg-white/70 rounded-lg text-black text-xs m-3 px-3 py-0.5">{data.data.category}</span>
-                <img className="w-full h-full object-cover rounded-lg" src={data.data.image} alt={data.data.title} />
+            <figure className="relative mb-3 w-full h-80 sm:h-80 md:h-64 lg:h-72 overflow-hidden rounded-t-lg p-5">
+                <span className="absolute bottom-0 left-0 bg-gray-200 rounded-lg text-black text-xs m-3 px-3 py-0.5 z-10">{data.data.category}</span>
+                <img className="w-full h-full object-scale-down rounded-lg" src={data.data.image} alt={data.data.title} />
                 {renderIcon(data.data.id)}
             </figure>
-            <p className="flex justify-between">
+            <p className="flex justify-between px-5 pb-5">
                 <span className="text-xs font-light">{data.data.title}</span>
                 <span className="text-lg font-medium">${data.data.price}</span>
             </p>

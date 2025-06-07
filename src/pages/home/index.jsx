@@ -21,7 +21,7 @@ function Home() {
   }
 
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center m-5">
         <div className='flex w-80 items-center relative justify-center mb-3'>
           <h1 className='font-medium text-xl'>Home</h1>
         </div>
@@ -31,7 +31,7 @@ function Home() {
           placeholder="Search a product" 
           onChange={(event) => context.setSearchByTitle(event.target.value)}
         />
-        <div className="grid gap-3 grid-cols-3 w-full max-w-screen-lg">
+        <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-screen-lg justify-items-center items-center content-center">
         {renderView()}
         </div>
         <ProductDetail />
