@@ -26,7 +26,7 @@ function Home() {
           <h1 className='font-medium text-xl'>Home</h1>
         </div>
         <input
-          className="rounded-lg border border-black w-80 p-3 mb-3 focus:outline-none" 
+          className="rounded-lg border border-gray-300 w-80 p-3 mb-3 focus:outline-none" 
           type="text" 
           placeholder="Search a product" 
           onChange={(event) => context.setSearchByTitle(event.target.value)}
