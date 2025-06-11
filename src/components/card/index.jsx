@@ -25,6 +25,7 @@ function Card(data) {
             return (
                 <button 
                     className="absolute top-0 right-0 flex justify-center items-center bg-green-500 w-6 h-6 rounded-full m-3 p-1"
+                    onClick={() => context.removeProductFromCart(id)}
                 >
                     <CheckIcon className="w-6 h-6 text-white" />
                 </button>
@@ -44,11 +45,10 @@ function Card(data) {
     return (
         <div 
             className="bg-white cursor-pointer w-full max-w-sm rounded-lg m-10 shadow-lg"
-            onClick={() => showProduct(data.data)}
         >
             <figure className="relative mb-3 w-full h-80 sm:h-80 md:h-64 lg:h-72 overflow-hidden rounded-t-lg p-5">
-                <span className="absolute bottom-0 left-0 bg-gray-200 rounded-lg text-black text-xs m-3 px-3 py-0.5 z-10">{data.data.category}</span>
-                <img className="w-full h-full object-scale-down rounded-lg" src={data.data.image} alt={data.data.title} />
+                <span className="absolute bottom-0 left-0 bg-gray-200 rounded-lg text-black text-xs m-3 px-3 py-0.5">{data.data.category}</span>
+                <img className="w-full h-full object-scale-down rounded-lg" src={data.data.image} alt={data.data.title} onClick={() => showProduct(data.data)}/>
                 {renderIcon(data.data.id)}
             </figure>
             <p className="flex justify-between px-5 pb-5">

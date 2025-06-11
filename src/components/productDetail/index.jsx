@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { ShoppingCartContext } from '../../context';
-import './styles.css';
 
 function ProductDetail() {
     const context = useContext(ShoppingCartContext);
 
     return (
         <aside 
-            className={`${context.isProductDetailOpen ? 'flex' : 'hidden'} product-detail flex-col fixed right-3 border border-black rounded-lg bg-white`}
+            className={`${context.isProductDetailOpen ? 'flex' : 'hidden'} flex-col fixed top-0 md:top-20 right-0 border rounded-xl bg-white z-40 w-full md:w-[360px] overflow-y-auto h-screen md:h-[calc(100vh-80px)] shadow-xl`}
         >
             <div className='flex justify-between items-center p-5'>
                 <h2 className='font-medium text-xl'>Detail</h2>
@@ -21,7 +20,7 @@ function ProductDetail() {
             </div>
             <figure className='px-6'>
                 <img
-                    className='w-full max-h-80 rounded-lg' 
+                    className='w-full h-full max-h-80 object-scale-down rounded-lg' 
                     src={context.productToShow.image} 
                     alt={context.productToShow.title}
                 />

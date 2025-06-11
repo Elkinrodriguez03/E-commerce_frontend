@@ -9,10 +9,10 @@ import './styles.css';
 function CheckoutSideMenu() {
     const context = useContext(ShoppingCartContext);
 
-    const handleDelete = (id) => {
-        const productsFiltered = context.cartProducts.filter(product => product.id != id);
-        context.setCartProducts(productsFiltered)
-    }
+    // const handleDelete = (id) => {
+    //     const productsFiltered = context.cartProducts.filter(product => product.id != id);
+    //     context.setCartProducts(productsFiltered)
+    // }
 
     const handleCheckout = () => {
         const orderToAdd = {
@@ -29,7 +29,7 @@ function CheckoutSideMenu() {
 
     return (
         <aside 
-            className={`${context.isCheckoutSideMenuOpen ? 'flex' : 'hidden'} checkout-side-menu flex-col fixed right-3 border border-black rounded-lg bg-white`}
+            className={`${context.isCheckoutSideMenuOpen ? 'flex' : 'hidden'} flex-col fixed top-0 md:top-20 right-0 border rounded-xl bg-white z-40 w-full md:w-[360px] overflow-y-auto h-screen md:h-[calc(100vh-80px)] shadow-xl}`}
         >
             <div className='flex justify-between items-center p-5'>
                 <h2 className='font-medium text-xl'>My Order</h2>
@@ -49,7 +49,7 @@ function CheckoutSideMenu() {
                         title={product.title}
                         imageUrl={product.image}
                         price={product.price} 
-                        handleDelete={handleDelete}
+                        handleDelete={context.removeProductFromCart}
                     />
                 ))
             }

@@ -172,8 +172,8 @@ function Navbar() {
         </ul>
         <ul className="flex flex-col md:flex-row items-start md:items-center z-10 gap-4 md:gap-3 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-t-0 border-gray-300 md:border-trasnparent">
           {renderView()}
-          <li className="flex items-center">
-            <ShoppingCartIcon className="w-6 h-6 text-black" />
+          <li className="flex items-center cursor-pointer">
+            <ShoppingCartIcon className="w-6 h-6 text-black" onClick={() => context.openCheckoutSideMenu()} />
             <div>{context.cartProducts.length}</div>
           </li>
         </ul>

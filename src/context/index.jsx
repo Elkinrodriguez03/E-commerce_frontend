@@ -6,21 +6,12 @@ export const initializeLocalStorage = () => {
     const accountInLocalStorage = localStorage.getItem('account');
     const signOutInLocalStorage = localStorage.getItem('sign-out');
 
-    let parsedAccount;
-    let parsedSignOut;
-
     if (!accountInLocalStorage) {
-        localStorage.setItem('account', JSON.stringify({}))
-        parsedAccount = {};
-    } else {
-        parsedAccount = JSON.parse(accountInLocalStorage)
+        localStorage.setItem('account', JSON.stringify({}));
     }
 
     if (!signOutInLocalStorage) {
-        localStorage.setItem('sign-out', JSON.stringify(false))
-        parsedSignOut = false;
-    } else {
-        parsedSignOut = JSON.parse(signOutInLocalStorage)
+        localStorage.setItem('sign-out', JSON.stringify(false));
     }
 }
 
@@ -107,6 +98,11 @@ export function ShoppingCartProvider({children}) {
         }
     }
 
+    const removeProductFromCart = (id) => {
+        const updatedCart = cartProducts.filter(product => product.id !== id);
+        setCartProducts(updatedCart);
+    };
+
     useEffect(() => {
         if (searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_TITLE_AND_CATEGORY', items, searchByTitle, searchByCategory));
         if (searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory));
@@ -144,7 +140,8 @@ export function ShoppingCartProvider({children}) {
                 account,
                 setAccount,
                 signOut,
-                setSignOut
+                setSignOut,
+                removeProductFromCart
             }}
         >
             {children}
