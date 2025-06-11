@@ -28,6 +28,11 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenuAndDoAction = (action) => {
+    if (action) action(); // Perform the action if provided
+    setIsMenuOpen(false); // Always close the menu
+  };
+
   const renderView = () => {
     if (isUserSignOut) {
       return (
@@ -35,7 +40,7 @@ function Navbar() {
           <NavLink
             to="/sign-in"
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
-            onClick={() => handleSignOut()}
+            onClick={() => closeMenuAndDoAction(() => handleSignOut())}
           >
             Sign out
           </NavLink>
@@ -65,7 +70,7 @@ function Navbar() {
             <NavLink
               to="/sign-in"
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
-              onClick={() => handleSignOut()}
+              onClick={() => closeMenuAndDoAction(() => handleSignOut())}
             >
               Sign out
             </NavLink>
@@ -86,18 +91,18 @@ function Navbar() {
         </li>
       </ul>
       <div className="md:hidden">
-        <button>
+        <button onClick={toggleMenu}>
           {isMenuOpen ? (
-            <XMarkIcon className="w-8 h-8 text-gray-700" onClick={toggleMenu} />
+            <XMarkIcon className="w-8 h-8 text-gray-700" />
           ) : (
-            <Bars3Icon className="w-8 h-8 text-black" onClick={toggleMenu} />
+            <Bars3Icon className="w-8 h-8 text-black" />
           )}
         </button>
       </div>
 
       {isMenuOpen && (
         <div
-          className="fixed inset-0 z-20 md:hidden" // Full screen overlay
+          className="fixed z-20 md:hidden" // Full screen overlay
           onClick={toggleMenu} // Close menu when clicking outside
         ></div>
       )}
@@ -122,7 +127,7 @@ function Navbar() {
           <li>
             <NavLink
               to="/"
-              onClick={() => context.setSearchByCategory()}
+              onClick={() => closeMenuAndDoAction(() => context.setSearchByCategory())}
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
             >
               All
@@ -131,11 +136,11 @@ function Navbar() {
           <li>
             <NavLink
               to="/clothes"
-              onClick={() =>
+              onClick={() => closeMenuAndDoAction(() =>
                 context.setSearchByCategory(
                   `men's clothing`,
                   `women's clothing`
-                )
+                ))
               }
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
             >
@@ -145,7 +150,7 @@ function Navbar() {
           <li>
             <NavLink
               to="/electronics"
-              onClick={() => context.setSearchByCategory("electronics")}
+              onClick={() => closeMenuAndDoAction(() => context.setSearchByCategory("electronics"))}
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
             >
               electronics
@@ -154,7 +159,7 @@ function Navbar() {
           <li>
             <NavLink
               to="/jewelery"
-              onClick={() => context.setSearchByCategory("jewelery")}
+              onClick={() => closeMenuAndDoAction(() => context.setSearchByCategory("jewelery"))}
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
             >
               Jewelery
@@ -163,7 +168,7 @@ function Navbar() {
           <li>
             <NavLink
               to="/others"
-              onClick={() => context.setSearchByCategory("others")}
+              onClick={() => closeMenuAndDoAction(() => context.setSearchByCategory("others"))}
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
             >
               others
@@ -173,7 +178,7 @@ function Navbar() {
         <ul className="flex flex-col md:flex-row items-start md:items-center z-10 gap-4 md:gap-3 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-t-0 border-gray-300 md:border-trasnparent">
           {renderView()}
           <li className="flex items-center cursor-pointer">
-            <ShoppingCartIcon className="w-6 h-6 text-black" onClick={() => context.openCheckoutSideMenu()} />
+            <ShoppingCartIcon className="w-6 h-6 text-black" onClick={() => closeMenuAndDoAction(() => context.openCheckoutSideMenu())} />
             <div>{context.cartProducts.length}</div>
           </li>
         </ul>

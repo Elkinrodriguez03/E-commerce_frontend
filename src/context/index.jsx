@@ -29,7 +29,10 @@ export function ShoppingCartProvider({children}) {
     // Product detail - open/close
     const [isProductDetailOpen, setIsProductDetailOpen] =  useState(false);
     
-    const openProductDetail = () => setIsProductDetailOpen(true);
+    const openProductDetail = () => {
+        closeCheckoutSideMenu();
+        setIsProductDetailOpen(true);
+    }
     const closeProductDetail = () => setIsProductDetailOpen(false);
 
     // Product detail - show product
@@ -46,7 +49,10 @@ export function ShoppingCartProvider({children}) {
     // Checkout Side Menu - open/close
     const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] =  useState(false);
     
-    const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
+    const openCheckoutSideMenu = () => {
+        closeProductDetail();
+        setIsCheckoutSideMenuOpen(true);
+    }
     const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
 
     // Shopping cart - Order
@@ -98,6 +104,15 @@ export function ShoppingCartProvider({children}) {
         }
     }
 
+    
+    const addProductsToCart = (event, productData) => {
+        event.stopPropagation()
+        setCartProducts([...cartProducts, productData])
+        setCounter(counter + 1)
+        openCheckoutSideMenu()
+        closeProductDetail()
+    }
+    
     const removeProductFromCart = (id) => {
         const updatedCart = cartProducts.filter(product => product.id !== id);
         setCartProducts(updatedCart);
@@ -141,7 +156,8 @@ export function ShoppingCartProvider({children}) {
                 setAccount,
                 signOut,
                 setSignOut,
-                removeProductFromCart
+                removeProductFromCart,
+                addProductsToCart
             }}
         >
             {children}

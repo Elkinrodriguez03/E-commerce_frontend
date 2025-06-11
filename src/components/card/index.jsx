@@ -10,13 +10,13 @@ function Card(data) {
         context.setProductToShow(productDetail)
     }
 
-    const addProductsToCart = (event, productData) => {
-        event.stopPropagation()
-        context.setCartProducts([...context.cartProducts, productData])
-        context.setCounter(context.counter + 1)
-        context.openCheckoutSideMenu()
-        context.closeProductDetail()
-    }
+    // const addProductsToCart = (event, productData) => {
+    //     event.stopPropagation()
+    //     context.setCartProducts([...context.cartProducts, productData])
+    //     context.setCounter(context.counter + 1)
+    //     context.openCheckoutSideMenu()
+    //     context.closeProductDetail()
+    // }
 
     const renderIcon = (id) => {
         const isInCart = context.cartProducts.filter(product => product.id === id).length > 0;
@@ -34,7 +34,7 @@ function Card(data) {
             return (
                 <button 
                     className="absolute top-0 right-0 flex justify-center items-center bg-gray-100 w-6 h-6 rounded-full m-3 p-1"
-                    onClick={(event) => addProductsToCart(event, data.data)}
+                    onClick={(event) => context.addProductsToCart(event, data.data)}
                 >
                     <PlusIcon className="w-6 h-6 text-black" />
                 </button>
