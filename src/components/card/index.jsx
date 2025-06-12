@@ -51,9 +51,9 @@ function Card(data) {
                 <img className="w-full h-full object-scale-down rounded-lg" src={data.data.image} alt={data.data.title} onClick={() => showProduct(data.data)}/>
                 {renderIcon(data.data.id)}
             </figure>
-            <p className="flex justify-between px-5 pb-5">
+            <p className="flex flex-col md:flex-row justify-between px-5 pb-5">
                 <span className="text-xs font-light">{data.data.title}</span>
-                <span className="text-lg font-medium">${data.data.price}</span>
+                <span className="text-lg font-medium md:ml-2">${data.data.price}</span>
             </p>
         </div>
     )

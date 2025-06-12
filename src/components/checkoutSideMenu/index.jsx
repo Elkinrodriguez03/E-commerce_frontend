@@ -8,19 +8,6 @@ import { totalPrice } from '../../utils';
 function CheckoutSideMenu() {
     const context = useContext(ShoppingCartContext);
 
-    const handleCheckout = () => {
-        const orderToAdd = {
-            date: "02.12.23",
-            products: context.cartProducts,
-            totalProducts: context.cartProducts.length,
-            totalPrice: totalPrice(context.cartProducts)
-        }
-
-        context.setOrder([...context.order, orderToAdd])
-        context.setCartProducts([])
-        context.setSearchByTitle(null)
-    }
-
     const closeCheckoutSideMenu = (action) => {
         if (action) action();
         context.closeCheckoutSideMenu();
@@ -60,7 +47,7 @@ function CheckoutSideMenu() {
                 <span className='font-medium text-2xl'>${totalPrice(context.cartProducts)}</span>
                 </p>
                 <Link to='/my-orders/last'>
-                    <button className='bg-black py-3 text-white w-full rounded-lg' onClick={() => closeCheckoutSideMenu(() => handleCheckout())}>Checkout</button>
+                    <button className='bg-black py-3 text-white w-full rounded-lg' onClick={() => closeCheckoutSideMenu(() => context.handleCheckout())}>Checkout</button>
                 </Link>
             </div>
         </aside>

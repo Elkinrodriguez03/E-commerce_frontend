@@ -1,32 +1,20 @@
 import { createContext, useState, useEffect } from "react";
+import { totalPrice } from '../utils';
 
 export const ShoppingCartContext = createContext();
 
-export const initializeLocalStorage = () => {
-    const accountInLocalStorage = localStorage.getItem('account');
-    const signOutInLocalStorage = localStorage.getItem('sign-out');
-
-    if (!accountInLocalStorage) {
-        localStorage.setItem('account', JSON.stringify({}));
-    }
-
-    if (!signOutInLocalStorage) {
-        localStorage.setItem('sign-out', JSON.stringify(false));
-    }
-}
-
 // eslint-disable-next-line react/prop-types
 export function ShoppingCartProvider({children}) {
-    // My Account
     const [account, setAccount] = useState({});
-
-    // Sign-out
-    const [signOut, setSignOut] = useState(false);
-
-    // Shopping cart - counter
+    const [signOut, setSignOut] = useState(() => {
+        const storedSignOut = localStorage.getItem('sign-out');
+        console.log("ShoppingCartProvider: Initializing signOut state...");
+        console.log("  localStorage 'sign-out' value:", storedSignOut);
+        const initialSignOutValue = storedSignOut ? JSON.parse(storedSignOut) : false;
+        console.log("  Parsed initial signOut value:", initialSignOutValue);
+        return initialSignOutValue;
+    });
     const [counter, setCounter] = useState(0);
-
-    // Product detail - open/close
     const [isProductDetailOpen, setIsProductDetailOpen] =  useState(false);
     
     const openProductDetail = () => {
@@ -58,15 +46,62 @@ export function ShoppingCartProvider({children}) {
     // Shopping cart - Order
     const [order, setOrder] = useState([]);
 
+    const handleCheckout = () => {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const year = String(today.getFullYear()).slice(-2); // Get last two digits of year
+        const formattedDate = `${day}-${month}-${year}`; // e.g., "11.06.25"
+
+        const hours = String(today.getHours()).padStart(2, '0');
+        const minutes = String(today.getMinutes()).padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}`; // e.g., "14:30"
+
+        const fullDateTime = `${formattedDate} ${formattedTime}`; // e.g., "11.06.25 14:30"
+
+        const orderToAdd = {
+            id: crypto.randomUUID(),
+            date: fullDateTime,
+            products: cartProducts,
+            totalProducts: cartProducts.length,
+            totalPrice: totalPrice(cartProducts)
+        }
+
+        setOrder([...order, orderToAdd])
+        setCartProducts([])
+        setSearchByTitle(null)
+    }
+
     // Get Products
     const [items, setItems] = useState();
     
     useEffect(() => {
+        console.log("ShoppingCartProvider: useEffect (initialization) running.");
+        // const storedAccount = localStorage.getItem('account');
+        // const storedSignOut = localStorage.getItem('sign-out');
+
+        // if (storedAccount) {
+        //     setAccount(JSON.parse(storedAccount));
+        // }
+        // if (storedSignOut) {
+        //     setSignOut(JSON.parse(storedSignOut));
+        // }
+
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
         .then(data => setItems(data))
-        
+        .catch(error => console.error("Failed to fetch products:", error));        
     }, []);
+
+    useEffect(() => {
+        console.log("ShoppingCartProvider: 'signOut' state changed to:", signOut);
+        localStorage.setItem('sign-out', JSON.stringify(signOut));
+    }, [signOut]);
+
+    useEffect(() => {
+        console.log("ShoppingCartProvider: 'account' state changed to:", account);
+        localStorage.setItem('account', JSON.stringify(account));
+    }, [account]);
     
     // Get Products by Title
     const [searchByTitle, setSearchByTitle] = useState();
@@ -157,7 +192,8 @@ export function ShoppingCartProvider({children}) {
                 signOut,
                 setSignOut,
                 removeProductFromCart,
-                addProductsToCart
+                addProductsToCart,
+                handleCheckout
             }}
         >
             {children}

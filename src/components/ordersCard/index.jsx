@@ -2,14 +2,14 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 
 function OrdersCard(props) {
     // eslint-disable-next-line react/prop-types
-    const { totalPrice, totalProducts } = props;
+    const { date, totalPrice, totalProducts } = props;
 
     return (
-        <div className="flex justify-between items-center mb-3 border border-black rounded-lg p-3 w-80">
+        <div className="flex justify-between items-center shadow-lg bg-white m-3 p-5 rounded-lg w-96 cursor-pointer">
             <div className="flex justify-between w-full">
                 <p className="flex flex-col">
-                    <span className="font-light">01.12.23</span>
-                    <span className="font-light">{totalProducts} Articles</span>
+                    <span className="font-normal mb-1">{totalProducts} Articles</span>
+                    <span className="font-medium">Completed at: </span><span className="font-light">{date}</span>
                 </p>
                 <p className="flex items-center gap-2">
                     <span className="font-medium text-2xl">${totalPrice}</span>

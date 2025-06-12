@@ -2,7 +2,7 @@ function MyAccount() {
 
     return (
       <div>
-        My account
+        My account test
       </div>
     )
   }

@@ -9,15 +9,15 @@ function OrderCard(props) {
     }
 
     return (
-        <div className="flex justify-between items-center mb-3">
-            <div className="flex items-center gap-2">
-                <figure className="w-20 h-20">
-                    <img className="w-full h-full rounded-lg object-scale-down" src={imageUrl} alt={title} />
+        <div className="grid grid-cols-2 md:grid-cols-3 justify-between items-center mb-3 p-3 shadow-md rounded-lg">
+            <div className="justify-self-center">
+                <figure className="rounded-lg">
+                    <img className="h-24 md:h-32" src={imageUrl} alt={title} />
                 </figure>
-                <p className="text-xs font-light">{title}</p>
             </div> 
-            <div className="flex items-center gap-2">
-                <p className="text-lg font-medium">${price}</p>
+            <div className="flex flex-col items-start p-3 w-full">
+                <p className="text-xs font-normal">{title}</p>
+                <span className="text-lg font-medium">${price}</span>
                 { renderXmarkIcon }
             </div>
         </div>

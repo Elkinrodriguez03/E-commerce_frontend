@@ -12,16 +12,14 @@ function Navbar() {
   const activeStyle = "underline underline-offset-4";
   const context = useContext(ShoppingCartContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const signOut = localStorage.getItem("sign-out");
-  const parsedSignOut = JSON.parse(signOut);
-  const isUserSignOut = context.signOut || parsedSignOut;
+  const isUserSignOut = context.signOut;
 
   const handleSignOut = () => {
-    const stringifiedSignOut = JSON.stringify(true);
-    localStorage.setItem("sign-out", stringifiedSignOut);
+    // const stringifiedSignOut = JSON.stringify(true);
+    // localStorage.setItem("sign-out", stringifiedSignOut);
 
     context.setSignOut(true);
+    context.setAccount({});
   };
 
   const toggleMenu = () => {
@@ -29,31 +27,37 @@ function Navbar() {
   };
 
   const closeMenuAndDoAction = (action) => {
-    if (action) action(); // Perform the action if provided
-    setIsMenuOpen(false); // Always close the menu
+    if (action) action();
+    setIsMenuOpen(false);
   };
+  
+  console.log("Navbar: Rendering...");
+    console.log("  context.signOut (from context):", context.signOut);
+    console.log("  isUserSignOut (derived in Navbar):", isUserSignOut);
 
   const renderView = () => {
+    console.log("Navbar: renderView called. isUserSignOut:", isUserSignOut);
     if (isUserSignOut) {
       return (
         <li>
           <NavLink
             to="/sign-in"
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
-            onClick={() => closeMenuAndDoAction(() => handleSignOut())}
+            onClick={() => closeMenuAndDoAction()}
           >
-            Sign out
+            Sign In
           </NavLink>
         </li>
       );
     } else {
       return (
         <>
-          <li className="text-black/60">email@email.com</li>
+          <li className="text-black/60">{context.account?.email || "test@ecommerce.com"}</li>
           <li>
             <NavLink
               to="/my-orders"
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
+              onClick={() => closeMenuAndDoAction()}
             >
               My Orders
             </NavLink>
@@ -62,6 +66,7 @@ function Navbar() {
             <NavLink
               to="/my-account"
               className={({ isActive }) => (isActive ? activeStyle : undefined)}
+              onClick={() => closeMenuAndDoAction()}
             >
               My Account
             </NavLink>

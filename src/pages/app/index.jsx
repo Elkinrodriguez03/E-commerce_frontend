@@ -1,5 +1,6 @@
 import { useRoutes, BrowserRouter } from 'react-router-dom';
 import { ShoppingCartProvider } from '../../context';
+import { initializeLocalStorage } from '../../utils';
 import Home from '../home';
 import MyAccount from '../myAccount/index';
 import MyOrder from '../myOrder/index';
@@ -9,6 +10,8 @@ import NotFound from '../notFound/index';
 import Navbar from '../../components/navbar';
 import CheckoutSideMenu from '../../components/checkoutSideMenu';
 import './App.css';
+
+initializeLocalStorage();
 
 const AppRoutes = () => {
     let routes = useRoutes([
